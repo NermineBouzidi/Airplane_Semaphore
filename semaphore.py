@@ -77,11 +77,12 @@ class Airplane(threading.Thread):
         # Collision check
         for plane in airplanes:
             if plane.id != self.id and plane.y == 470:  # Check if the plane is on the ground
-                if not any(plane1.id == self.id and plane2.id == plane.id or plane1.id == plane.id and plane2.id == self.id for plane1, plane2 in collisions):
-                    messages["collision"] = "COLLISION!"
-                    collisions.append((self, plane))  # Add the pair of planes that collided
-                    collision_sound.play()  # Play collision sound
-                    break  # Stop checking further once a collision is detected
+                if abs(self.x - plane.x) < 190:
+                    if not any(plane1.id == self.id and plane2.id == plane.id or plane1.id == plane.id and plane2.id == self.id for plane1, plane2 in collisions):
+                         messages["collision"] = "COLLISION!"
+                         collisions.append((self, plane))  # Add the pair of planes that collided
+                         collision_sound.play()  # Play collision sound
+                         break  # Stop checking further once a collision is detected
 
         self.landed = True
         messages[self.id] = f"Airplane {self.id} has landed!"
